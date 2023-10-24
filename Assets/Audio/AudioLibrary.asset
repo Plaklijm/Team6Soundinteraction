@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2204bf128383ced4f8a374a536984a4c, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: 
+  soundCategories:
+  - Hengel
+  - VisserMan
+  - Fish
+  musicCategories:
+  - 
+  Sounds:
+  - {fileID: 11400000, guid: 08f764d7dc20c1142ac0d37b4d69f1c0, type: 2}
+  - {fileID: 11400000, guid: 46ce6e3121b204d408f6c306a0b95c4b, type: 2}
+  - {fileID: 11400000, guid: 7fb0d96854c5b2146b3b7c97d169b5e0, type: 2}
+  - {fileID: 11400000, guid: 23a2d6d2b812c384ea5af24f51780a81, type: 2}
+  - {fileID: 11400000, guid: 14dec65ba21f63348959080528e9c0c8, type: 2}
+  - {fileID: 11400000, guid: e5a8c4037e6f0c641b9dd5fa64e20574, type: 2}
+  - {fileID: 11400000, guid: 78ae2514438e0d447a9ce9428d2cfa9b, type: 2}
+  - {fileID: 11400000, guid: 7aa0b682026c3ff438b9c0dfed0c18aa, type: 2}
+  - {fileID: 11400000, guid: 4a9440e2807fa9947997cd1c46389f4c, type: 2}
+  - {fileID: 11400000, guid: 5c12bbd8b83351248b555ef729b55e20, type: 2}
+  - {fileID: 11400000, guid: 7b7a9cdb0e5350d4aaa4a65645471f19, type: 2}
+  - {fileID: 11400000, guid: 5f902650b23ab4b4b942044dbd8bf6b4, type: 2}
+  - {fileID: 11400000, guid: ac1bf0458a0e7f54ba5e59e33fb6fa45, type: 2}
+  - {fileID: 11400000, guid: d6ab8af0c5c68824b86ae11a8070cc45, type: 2}
+  - {fileID: 11400000, guid: c11083a65522aad48a7525d25a21055e, type: 2}
+  - {fileID: 11400000, guid: 6e3268b009c61c544a788aab07e2d65c, type: 2}
+  - {fileID: 11400000, guid: cb1c624d8ff37c5419cfc6f09d4977da, type: 2}
+  Music:
+  - {fileID: 11400000, guid: 191bb6da64b978748ba5bdd7e040b6e4, type: 2}
+  useCustomNames: 0
+  generatedName: AudioLibrary
+  musicEnum: 
+  musicEnumGenerated: AudioLibraryMusic
+  musicNamespace: 
+  musicNamespaceGenerated: 
+  soundEnum: 
+  soundEnumGenerated: AudioLibrarySounds
+  soundNamespace: 
+  soundNamespaceGenerated: 
+  soundCategoriesToList:
+  - name: Hengel
+    files:
+    - {fileID: 11400000, guid: 08f764d7dc20c1142ac0d37b4d69f1c0, type: 2}
+    - {fileID: 11400000, guid: 46ce6e3121b204d408f6c306a0b95c4b, type: 2}
+    - {fileID: 11400000, guid: 7fb0d96854c5b2146b3b7c97d169b5e0, type: 2}
+    - {fileID: 11400000, guid: 23a2d6d2b812c384ea5af24f51780a81, type: 2}
+    foldout: 1
+  - name: VisserMan
+    files:
+    - {fileID: 11400000, guid: 14dec65ba21f63348959080528e9c0c8, type: 2}
+    - {fileID: 11400000, guid: e5a8c4037e6f0c641b9dd5fa64e20574, type: 2}
+    - {fileID: 11400000, guid: 78ae2514438e0d447a9ce9428d2cfa9b, type: 2}
+    - {fileID: 11400000, guid: 7aa0b682026c3ff438b9c0dfed0c18aa, type: 2}
+    - {fileID: 11400000, guid: 6e3268b009c61c544a788aab07e2d65c, type: 2}
+    - {fileID: 11400000, guid: cb1c624d8ff37c5419cfc6f09d4977da, type: 2}
+    foldout: 1
+  - name: Fish
+    files:
+    - {fileID: 11400000, guid: 4a9440e2807fa9947997cd1c46389f4c, type: 2}
+    - {fileID: 11400000, guid: 5c12bbd8b83351248b555ef729b55e20, type: 2}
+    - {fileID: 11400000, guid: 7b7a9cdb0e5350d4aaa4a65645471f19, type: 2}
+    - {fileID: 11400000, guid: 5f902650b23ab4b4b942044dbd8bf6b4, type: 2}
+    - {fileID: 11400000, guid: ac1bf0458a0e7f54ba5e59e33fb6fa45, type: 2}
+    - {fileID: 11400000, guid: d6ab8af0c5c68824b86ae11a8070cc45, type: 2}
+    - {fileID: 11400000, guid: c11083a65522aad48a7525d25a21055e, type: 2}
+    foldout: 1
+  musicCategoriesToList:
+  - name: 
+    files:
+    - {fileID: 11400000, guid: 191bb6da64b978748ba5bdd7e040b6e4, type: 2}
+    foldout: 1

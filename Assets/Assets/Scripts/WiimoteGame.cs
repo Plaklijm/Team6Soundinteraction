@@ -14,9 +14,16 @@ public class WiimoteGame : MonoBehaviour {
 
     private Wiimote wiimote;
 
-    private Vector2 scrollPosition;
+    private VisHengel hengel;
 
     private Vector3 wmpOffset = Vector3.zero;
+
+    private bool isFishing = false;
+
+    private void Awake()
+    {
+        hengel = GetComponentInChildren<VisHengel>();
+    }
 
     void Start()
     {
@@ -61,42 +68,60 @@ public class WiimoteGame : MonoBehaviour {
         int ret;
         do
         {
-            Debug.Log("Do while");
             ret = wiimote.ReadWiimoteData();
 
-            if (ret > 0 && wiimote.current_ext == ExtensionController.MOTIONPLUS) {
+            if (ret > 0 && wiimote.current_ext == ExtensionController.MOTIONPLUS && !isFishing) {
                 Vector3 mainOffset = new Vector3(  0,
                                                 -wiimote.MotionPlus.YawSpeed,
                                                 0) / 95f; // Divide by 95Hz (average updates per second from wiimote)
                 wmpOffset += mainOffset;
-                
+
+                // Slow down if you want to reel the fishing line
+                if (wiimote.Button.b || wiimote.Button.a)
+                {
+                    model.mainRot.Rotate(mainOffset / 3, Space.Self);
+                    return;
+                }
                 //Debug.Log(wiimote.MotionPlus.YawSpeed);
-                model.mainRot.Rotate(mainOffset, Space.Self);
+                model.mainRot.Rotate(mainOffset / 1.5f, Space.Self);
             }
         } while (ret > 0);
         
+        
+        // HANDLE INPUT AND SEND IT TO THE HENGEl
+        
         if (wiimote.Button.b && wiimote.MotionPlus.PitchSpeed > 20 && !wiimote.MotionPlus.PitchSlow)
         {
-            Debug.Log("Throw fishing line");
+            if (!isFishing)
+            {
+                hengel.ThrowFishingLine();
+                isFishing = true;
+            }
         }
 
         if (wiimote.Button.a && wiimote.MotionPlus.PitchSpeed < -20 && !wiimote.MotionPlus.PitchSlow)
         {
-            Debug.Log("Reel fishing line in");
+            if (isFishing)
+            {
+                hengel.ReelFishingLineIn();
+                isFishing = false;
+            }
         }
+        
+        bool up = wiimote.Button.d_up;
+        bool down = wiimote.Button.d_down;
+        bool left = wiimote.Button.d_left;
+        bool right = wiimote.Button.d_right;
+        
+        Vector2 directionalInput = new Vector2((right ? 1 : 0) - (left ? 1 : 0), (up ? 1 : 0) - (down ? 1 : 0));
 
-        /*model.a.enabled = wiimote.Button.a;
-        model.b.enabled = wiimote.Button.b;
-        model.one.enabled = wiimote.Button.one;
-        model.two.enabled = wiimote.Button.two;
-        model.d_up.enabled = wiimote.Button.d_up;
-        model.d_down.enabled = wiimote.Button.d_down;
-        model.d_left.enabled = wiimote.Button.d_left;
-        model.d_right.enabled = wiimote.Button.d_right;
-        model.plus.enabled = wiimote.Button.plus;
-        model.minus.enabled = wiimote.Button.minus;
-        model.home.enabled = wiimote.Button.home;*/
-
+        if (isFishing)
+        {
+            Debug.Log(directionalInput.magnitude);
+            directionalInput.Normalize();
+            hengel.MoveFishingFloat(directionalInput);
+        }
+        
         if (wiimote.current_ext != ExtensionController.MOTIONPLUS)
             model.mainRot.localRotation = initial_rotation;
     }
