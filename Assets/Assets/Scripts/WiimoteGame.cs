@@ -79,7 +79,7 @@ public class WiimoteGame : MonoBehaviour {
                 // Slow down if you want to reel the fishing line
                 if (wiimote.Button.b || wiimote.Button.a)
                 {
-                    model.mainRot.Rotate(mainOffset / 3, Space.Self);
+                    model.mainRot.Rotate(mainOffset / 5f, Space.Self);
                     return;
                 }
                 //Debug.Log(wiimote.MotionPlus.YawSpeed);
@@ -103,6 +103,7 @@ public class WiimoteGame : MonoBehaviour {
         {
             if (isFishing)
             {
+                Debug.Log("Reel WIIMOTe");
                 hengel.ReelFishingLineIn();
                 isFishing = false;
             }

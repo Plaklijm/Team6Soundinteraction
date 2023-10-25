@@ -61,26 +61,34 @@ public class VisHengel : MonoBehaviour
 
     public void ReelFishingLineIn()
     {
-        switch (currentFish.score)
+        if (currentFish)
         {
-            case < 3:
-                AudioManager.PlaySound(AudioLibrarySounds.LowTierFish);
-                break;
-            case < 7:
-                AudioManager.PlaySound(AudioLibrarySounds.MidTierFish);
-                break;
-            case > 8:
-                AudioManager.PlaySound(AudioLibrarySounds.HighTierFish);
-                break;
-            
+            score = currentFish.score;
+            switch (currentFish.score)
+            {
+                    case < 3:
+                        AudioManager.PlaySound(AudioLibrarySounds.LowTierFish);
+                        break;
+                    case < 7:
+                        AudioManager.PlaySound(AudioLibrarySounds.MidTierFish);
+                        break;
+                    case > 8:
+                        AudioManager.PlaySound(AudioLibrarySounds.HighTierFish);
+                        break;
+                    default:
+                        break;
+                    
+            }
         }
-        VisManager.Instance.CatchFish(currentFish.gameObject);
+
+        AudioManager.PlaySound(AudioLibrarySounds.Whoosh);
+        
+        //VisManager.Instance.CatchFish(currentFish.gameObject);
         canMoveFloat = false;
         sCol.enabled = false;
         StopBliep();
         Debug.Log("Reel fishing line in");
-        Debug.Log(score);
-        AudioManager.PlaySound(AudioLibrarySounds.CaughtFish);
+        currentFish = null;
     }
     
     public void MoveFishingFloat(Vector2 _input)
@@ -88,7 +96,7 @@ public class VisHengel : MonoBehaviour
         if (canMoveFloat)
         {
             Vector3 currentPosition = sCol.transform.localPosition;
-            Vector3 newPosition = currentPosition + new Vector3(_input.x, 0, _input.y) / 15;
+            Vector3 newPosition = currentPosition + new Vector3(_input.x, 0, _input.y) / 7.5f;
 
             float maxXDistance = 60.0f; // Maximum allowed distance X axis
             float maxYDistance = 50.0f; // Maximum allowed distance Y axis
@@ -127,6 +135,7 @@ public class VisHengel : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         currentFish = other.GetComponent<Vias>();
+        Debug.Log(currentFish);
         if (!currentFish) return;
         
         float distance = Vector3.Distance(other.transform.position, sCol.transform.position);
@@ -144,7 +153,7 @@ public class VisHengel : MonoBehaviour
             case <= 5.0f:
                 selectedAudioSource = AudioLibrarySounds.BliepMid;
                 break;
-            case <= 10.0f:
+            case <= 12.5f:
                 selectedAudioSource = AudioLibrarySounds.BliepMidFar;
                 break;
             default:
@@ -157,6 +166,7 @@ public class VisHengel : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        currentFish = null;
         StopBliep();
     }
 
