@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JSAM;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SocialPlatforms.Impl;
+using Random = UnityEngine.Random;
 
 public class Vias : MonoBehaviour
 {
@@ -52,5 +54,10 @@ public class Vias : MonoBehaviour
 
         result = Vector3.zero;
         return false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Hello");
     }
 }

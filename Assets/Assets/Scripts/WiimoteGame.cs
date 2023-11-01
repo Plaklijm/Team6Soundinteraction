@@ -64,12 +64,11 @@ public class WiimoteGame : MonoBehaviour {
         if (!WiimoteManager.HasWiimote()) { return; }
 
         wiimote = WiimoteManager.Wiimotes[0];
-
+        Debug.Log("is fishing" + isFishing);
         int ret;
         do
         {
             ret = wiimote.ReadWiimoteData();
-
             if (ret > 0 && wiimote.current_ext == ExtensionController.MOTIONPLUS && !isFishing) {
                 Vector3 mainOffset = new Vector3(  0,
                                                 -wiimote.MotionPlus.YawSpeed,
@@ -87,7 +86,7 @@ public class WiimoteGame : MonoBehaviour {
             }
         } while (ret > 0);
         
-        
+        Debug.Log("hello");
         // HANDLE INPUT AND SEND IT TO THE HENGEl
         
         if (wiimote.Button.b && wiimote.MotionPlus.PitchSpeed > 20 && !wiimote.MotionPlus.PitchSlow)
@@ -108,23 +107,10 @@ public class WiimoteGame : MonoBehaviour {
                 isFishing = false;
             }
         }
-        
-        bool up = wiimote.Button.d_up;
-        bool down = wiimote.Button.d_down;
-        bool left = wiimote.Button.d_left;
-        bool right = wiimote.Button.d_right;
-        
-        Vector2 directionalInput = new Vector2((right ? 1 : 0) - (left ? 1 : 0), (up ? 1 : 0) - (down ? 1 : 0));
 
-        if (isFishing)
-        {
-            Debug.Log(directionalInput.magnitude);
-            directionalInput.Normalize();
-            hengel.MoveFishingFloat(directionalInput);
-        }
-        
         if (wiimote.current_ext != ExtensionController.MOTIONPLUS)
             model.mainRot.localRotation = initial_rotation;
+        
     }
 
     private Vector3 GetAccelVector()

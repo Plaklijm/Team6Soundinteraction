@@ -11,7 +11,10 @@ using JSAM;
 public class VisHengel : MonoBehaviour
 {
     private SphereCollider sCol;
-    private Vector3 initialPos;
+    public Transform EndTransform;
+    public Transform StartTransform;
+    private Vector3 startPos;
+    private Vector3 endPos;
     private int score;
     private bool canMoveFloat;
     private Vias currentFish;
@@ -26,7 +29,7 @@ public class VisHengel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initialPos = sCol.transform.localPosition;
+        startPos = StartTransform.position;
     }
 
     // Update is called once per frame
@@ -38,12 +41,12 @@ public class VisHengel : MonoBehaviour
 
     public void ThrowFishingLine()
     {
-        sCol.transform.localPosition = initialPos;
+        sCol.transform.localPosition = startPos;
         StartCoroutine(ThrowLine());
         sCol.enabled = true;
     }
 
-    IEnumerator ThrowLine()
+    private IEnumerator ThrowLine()
     {
         Debug.Log("Throw fishing line");
         if (Random.Range(0,10) > 4)
@@ -57,6 +60,29 @@ public class VisHengel : MonoBehaviour
             yield return null;
         AudioManager.PlaySound(AudioLibrarySounds.Plons, sCol.transform);
         canMoveFloat = true;
+        StartCoroutine(MoveFloatBack());
+    }
+
+    private IEnumerator MoveFloatBack()
+    {
+        startPos = StartTransform.position;
+        endPos = EndTransform.position;
+        float elapsedTime = 0;
+        float waitTime = 5f;
+
+        if (!currentFish)
+        {
+            while (elapsedTime < waitTime)
+            {
+                sCol.transform.position = Vector3.Lerp(startPos, endPos, (elapsedTime / waitTime));
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+            }
+        }
+        
+        sCol.transform.position = endPos;
+        yield return null;
     }
 
     public void ReelFishingLineIn()
@@ -101,7 +127,7 @@ public class VisHengel : MonoBehaviour
             float maxXDistance = 60.0f; // Maximum allowed distance X axis
             float maxYDistance = 50.0f; // Maximum allowed distance Y axis
         
-            if (Mathf.Abs(newPosition.x - initialPos.x) <= maxXDistance && Mathf.Abs(newPosition.z - initialPos.z) <= maxYDistance)
+            if (Mathf.Abs(newPosition.x - startPos.x) <= maxXDistance && Mathf.Abs(newPosition.z - startPos.z) <= maxYDistance)
             {
                 Debug.Log("move");
                 sCol.transform.localPosition = newPosition;
