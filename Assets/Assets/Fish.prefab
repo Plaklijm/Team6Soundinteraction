@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7308481063864174964}
   - component: {fileID: 8656866026470998914}
   - component: {fileID: 6672963628743976951}
-  - component: {fileID: 2127820001249212710}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Fish
@@ -113,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 6672963628743976951}
-  range: 10
+  range: 20
   score: 0
   centrePoint: {fileID: 3766284316586220}
 --- !u!195 &6672963628743976951
@@ -126,7 +125,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -137,17 +136,4 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!135 &2127820001249212710
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942093838395947485}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 15
-  m_Center: {x: 0, y: 0, z: 0}
+  m_ObstacleAvoidanceType: 2

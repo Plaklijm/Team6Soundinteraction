@@ -30,7 +30,7 @@ public class WiimoteGame : MonoBehaviour {
         initial_rotation = model.mainRot.localRotation;
         
         // ENABLE DEBUG MESSAGES
-        WiimoteManager.Debug_Messages = false;
+        WiimoteManager.Debug_Messages = true;
         
         WiimoteManager.FindWiimotes();
 
@@ -53,18 +53,15 @@ public class WiimoteGame : MonoBehaviour {
             data.SetZeroValues();
         }
         
-        // Register Data transfer
-
-        
         model.mainRot.rotation = initial_rotation;
     }
 
     void Update () 
     {
         if (!WiimoteManager.HasWiimote()) { return; }
-
         wiimote = WiimoteManager.Wiimotes[0];
-        Debug.Log("is fishing" + isFishing);
+        hengel.SetWiiMote(wiimote);
+        
         int ret;
         do
         {
@@ -74,7 +71,7 @@ public class WiimoteGame : MonoBehaviour {
                                                 -wiimote.MotionPlus.YawSpeed,
                                                 0) / 95f; // Divide by 95Hz (average updates per second from wiimote)
                 wmpOffset += mainOffset;
-
+                
                 // Slow down if you want to reel the fishing line
                 if (wiimote.Button.b || wiimote.Button.a)
                 {
@@ -86,7 +83,6 @@ public class WiimoteGame : MonoBehaviour {
             }
         } while (ret > 0);
         
-        Debug.Log("hello");
         // HANDLE INPUT AND SEND IT TO THE HENGEl
         
         if (wiimote.Button.b && wiimote.MotionPlus.PitchSpeed > 20 && !wiimote.MotionPlus.PitchSlow)
@@ -102,15 +98,15 @@ public class WiimoteGame : MonoBehaviour {
         {
             if (isFishing)
             {
-                Debug.Log("Reel WIIMOTe");
                 hengel.ReelFishingLineIn();
                 isFishing = false;
             }
         }
 
+        hengel.MashButton(wiimote.Button.a);
+
         if (wiimote.current_ext != ExtensionController.MOTIONPLUS)
             model.mainRot.localRotation = initial_rotation;
-        
     }
 
     private Vector3 GetAccelVector()

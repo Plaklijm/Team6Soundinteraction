@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 using JSAM;
+using WiimoteApi;
 
 public class VisHengel : MonoBehaviour
 {
@@ -18,7 +19,14 @@ public class VisHengel : MonoBehaviour
     private int score;
     private bool canMoveFloat;
     private Vias currentFish;
+    private Wiimote wiimoteRumble;
 
+    public float mashDelay = .75f;
+
+    private float mash;
+    private bool pressed;
+    private bool mashToFish;
+    
     private void Awake()
     {
         sCol = GetComponentInChildren<SphereCollider>();
@@ -29,7 +37,14 @@ public class VisHengel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mash = mashDelay;
         startPos = StartTransform.position;
+        mashToFish = false;
+    }
+
+    public void SetWiiMote(Wiimote mote)
+    {
+        wiimoteRumble = mote; 
     }
 
     // Update is called once per frame
@@ -38,12 +53,41 @@ public class VisHengel : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        
+    }
+
+    public void MashButton(bool a)
+    {
+        if (mashToFish)
+        {
+            mash -= Time.deltaTime;
+            Debug.Log("start mashing");
+            if (a && !pressed)
+            {
+                Debug.Log("mashing");
+                pressed = true;
+                mash = mashDelay;
+            }
+            else if (!a)
+            {
+                Debug.Log("unmashing");
+                pressed = false;
+            }
+
+            if (mash <= 0)
+            {
+                Debug.Log(" not fast enough");
+                mashToFish = false;
+            }
+        }
+    }
 
     public void ThrowFishingLine()
     {
         sCol.transform.localPosition = startPos;
         StartCoroutine(ThrowLine());
-        sCol.enabled = true;
     }
 
     private IEnumerator ThrowLine()
@@ -60,29 +104,46 @@ public class VisHengel : MonoBehaviour
             yield return null;
         AudioManager.PlaySound(AudioLibrarySounds.Plons, sCol.transform);
         canMoveFloat = true;
+        sCol.enabled = true;
         StartCoroutine(MoveFloatBack());
     }
 
     private IEnumerator MoveFloatBack()
     {
+        AudioManager.PlaySound(AudioLibrarySounds.Reel);
         startPos = StartTransform.position;
         endPos = EndTransform.position;
         float elapsedTime = 0;
         float waitTime = 5f;
-
-        if (!currentFish)
-        {
-            while (elapsedTime < waitTime)
-            {
-                sCol.transform.position = Vector3.Lerp(startPos, endPos, (elapsedTime / waitTime));
-                elapsedTime += Time.deltaTime;
-
-                yield return null;
-            }
-        }
         
+        while (elapsedTime < waitTime) 
+        {
+            if (currentFish)
+            {
+                mashToFish = true;
+                AudioManager.StopSound(AudioLibrarySounds.Reel);
+                StartCoroutine(Rumble());
+                yield break;
+                
+            }
+            sCol.transform.position = Vector3.Lerp(startPos, endPos, (elapsedTime / waitTime));
+            elapsedTime += Time.deltaTime;
+
+
+            yield return null;
+        }
+        AudioManager.StopSound(AudioLibrarySounds.Reel);
         sCol.transform.position = endPos;
         yield return null;
+    }
+
+    private IEnumerator Rumble()
+    {
+        wiimoteRumble.RumbleOn = true;
+        wiimoteRumble.SendWithType(OutputDataType.STATUS_INFO_REQUEST, new byte[] { 0x00 });
+        yield return new WaitForSeconds(.75f);
+        wiimoteRumble.RumbleOn = false;
+        wiimoteRumble.SendWithType(OutputDataType.STATUS_INFO_REQUEST, new byte[] { 0x00 });
     }
 
     public void ReelFishingLineIn()
